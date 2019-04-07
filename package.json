@@ -1,8 +1,14 @@
 {
-  "name": "relay-base-provider",
+  "name": "@relayin/base-provider",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Base provider for Relay micro services",
+  "main": "build/index.js",
+  "files": [
+    "build/src",
+    "build/providers",
+    "build/index.d.ts",
+    "build/index.js"
+  ],
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
@@ -15,8 +21,8 @@
     "commit": "git-cz"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "author": "relayin",
+  "license": "UNLICENSED",
   "devDependencies": {
     "@adonisjs/mrm-preset": "^1.0.21",
     "@types/node": "^11.13.0",
