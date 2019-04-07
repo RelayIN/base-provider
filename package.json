@@ -1,0 +1,57 @@
+{
+  "name": "relay-base-provider",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "mrm": "mrm --preset=@adonisjs/mrm-preset",
+    "pretest": "npm run lint",
+    "test": "node japaFile.js",
+    "prepublishOnly": "npm run build",
+    "clean": "del build",
+    "compile": "npm run lint && npm run clean && tsc",
+    "build": "npm run compile",
+    "lint": "tslint --project tsconfig.json",
+    "commit": "git-cz"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@adonisjs/mrm-preset": "^1.0.21",
+    "@types/node": "^11.13.0",
+    "commitizen": "^3.0.7",
+    "cz-conventional-changelog": "^2.1.0",
+    "del-cli": "^1.1.0",
+    "doctoc": "^1.4.0",
+    "japa": "^2.0.9",
+    "mrm": "^1.2.1",
+    "pkg-ok": "^2.3.1",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.15.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.4.2",
+    "yorkie": "^2.0.0"
+  },
+  "dependencies": {
+    "indicative": "^7.1.1",
+    "libphonenumber-js": "^1.7.15"
+  },
+  "nyc": {
+    "exclude": [
+      "test"
+    ],
+    "extension": [
+      ".ts"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "gitHooks": {
+    "commit-msg": "node ./node_modules/@adonisjs/mrm-preset/validateCommit/conventional/validate.js",
+    "pre-commit": "doctoc README.md --title='## Table of contents' && git add README.md"
+  }
+}
