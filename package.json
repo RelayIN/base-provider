@@ -40,6 +40,7 @@
     "yorkie": "^2.0.0"
   },
   "dependencies": {
+    "got": "^9.6.0",
     "indicative": "^7.1.1",
     "libphonenumber-js": "^1.7.15"
   },

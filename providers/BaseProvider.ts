@@ -9,9 +9,21 @@
 
 import * as helpers from '../src/Helpers'
 import * as rules from '../src/Validator'
+import { RelayServices } from '../src/RelayServices'
 
 export default class BaseProvider {
   constructor (public container) {
+  }
+
+  /**
+   * Registers bindings with the IoC container
+   */
+  public register () {
+    this.container.singleton('Relay/Services', () => {
+      const Config = this.container.use('Adonis/Src/Config')
+      const Logger = this.container.use('Adonis/Src/Logger')
+      return new RelayServices(Config.get('services'), Logger)
+    })
   }
 
   public async boot () {
