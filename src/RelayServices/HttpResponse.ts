@@ -48,7 +48,9 @@ export class HttpResponse {
   public state: 'success' | 'error' = this._hasError ? 'error' : 'success'
 
   constructor (private _response: any, private _hasError: boolean) {
-    this._computeError()
+    if (this._hasError) {
+      this._computeError()
+    }
   }
 
   /**
