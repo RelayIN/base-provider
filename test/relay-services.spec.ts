@@ -107,6 +107,7 @@ test.group('Relay Services | Http client', () => {
     server.close()
 
     assert.equal(response.status, 200)
+    assert.isFalse(response.hasServerError)
     assert.deepEqual(response.body, {
       url: '/v1/sms/otp/send',
       isJson: true,
