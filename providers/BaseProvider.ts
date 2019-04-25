@@ -8,7 +8,7 @@
  */
 
 import * as helpers from '../src/Helpers'
-import * as rules from '../src/Validator'
+import * as rules from '../src/Bindings/Validator'
 import { RelayServices } from '../src/RelayServices'
 
 export default class BaseProvider {
