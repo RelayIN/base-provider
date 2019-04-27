@@ -59,6 +59,18 @@ export class Repository <Model extends BaseModelContract>
   }
 
   /**
+   * Execute the query by adding `limit=1` clause to it
+   */
+  public async first (): Promise<Model | null> {
+    const rows = await this.builder.limit(1)
+    if (!rows.length) {
+      return null
+    }
+
+    return this._newUp(rows[0], true)
+  }
+
+  /**
    * Find a row using the primary key
    */
   public async find (value: any): Promise<Model | null> {

@@ -180,6 +180,28 @@ test.group('Repository', (group) => {
     assert.isFalse(users[0].$isDirty)
   })
 
+  test('wrap first result in model instance', async (assert) => {
+    await db().table('users').insert({
+      username: 'virk',
+      full_name: 'Harminder Virk',
+      email: 'virk@adonisjs.com',
+    })
+
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const user = await repo.first()
+    await db().table('users').truncate()
+
+    assert.deepEqual(user!.$attributes, {
+      id: 1,
+      full_name: 'Harminder Virk',
+      username: 'virk',
+    })
+
+    assert.deepEqual(user!.$dirty, {})
+    assert.isFalse(user!.$isNew)
+    assert.isFalse(user!.$isDirty)
+  })
+
   test('persist model instance with values', async (assert) => {
     let query: any = null
     function queryListener (sqlQuery) {
@@ -256,6 +278,41 @@ test.group('Repository', (group) => {
 
     await repo.persist(user)
 
+    db['removeAllListeners']('query', queryListener)
+    await db.table('users').truncate()
+
+    assert.lengthOf(queries, 2)
+    assert.equal(queries[0].sql, 'insert into `users` (`full_name`, `username`) values (?, ?)')
+    assert.deepEqual(queries[0].bindings, ['H virk', 'virk'])
+
+    assert.equal(queries[1].sql, 'update `users` set `full_name` = ? where `id` = ?')
+    assert.deepEqual(queries[1].bindings, ['Harminder virk', 1])
+    assert.isFalse(user.$isDirty)
+    assert.deepEqual(user.$attributes, { id: 1, username: 'virk', full_name: 'Harminder virk' })
+  })
+
+  test('persist model using save method', async (assert) => {
+    let queries: any[] = []
+    function queryListener (sqlQuery) {
+      queries.push(sqlQuery)
+    }
+
+    const db = configureDb(new FakeConfig())
+    db.on('query', queryListener)
+
+    const user = new User()
+    user.username = 'virk'
+    user.fullName = 'H virk'
+    await user.save(db)
+
+    assert.isFalse(user.$isNew)
+    assert.isFalse(user.$isDirty)
+
+    user.fullName = 'Harminder virk'
+    assert.isTrue(user.$isDirty)
+    assert.deepEqual(user.$dirty, { full_name: 'Harminder virk' })
+
+    await user.save(db)
     db['removeAllListeners']('query', queryListener)
     await db.table('users').truncate()
 

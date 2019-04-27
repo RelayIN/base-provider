@@ -15,24 +15,6 @@ import { Repository } from '../Repository'
 import { getDirty } from '../Attributes'
 
 abstract class BaseModel implements BaseModelContract {
-  public $attributes = {}
-  public $isNew = true
-
-  /**
-   * Returns dirty values
-   */
-  public get $dirty () {
-    return getDirty(this)
-  }
-
-  /**
-   * Returns a boolean telling if model is dirty to be
-   * persisted
-   */
-  public get $isDirty () {
-    return Object.keys(this.$dirty).length > 0
-  }
-
   /**
    * Returns a new repository instance to execute queries
    * scoped to this model only
@@ -79,6 +61,32 @@ abstract class BaseModel implements BaseModelContract {
     }
 
     this.boot()
+  }
+
+  public $attributes = {}
+  public $isNew = true
+
+  /**
+   * Returns dirty values
+   */
+  public get $dirty () {
+    return getDirty(this)
+  }
+
+  /**
+   * Returns a boolean telling if model is dirty to be
+   * persisted
+   */
+  public get $isDirty () {
+    return Object.keys(this.$dirty).length > 0
+  }
+
+  /**
+   * Persist model to the database. If model already exists,
+   * then it will updated
+   */
+  public async save (customDb?: Knex) {
+    return this.constructor['query'](customDb).persist(this)
   }
 }
 
