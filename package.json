@@ -1,6 +1,6 @@
 {
   "name": "@relayin/base-provider",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Base provider for Relay micro services",
   "main": "build/index.js",
   "files": [
