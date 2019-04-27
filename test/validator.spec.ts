@@ -8,7 +8,7 @@
  */
 
 import * as test from 'japa'
-import * as rules from '../src/Validator'
+import * as rules from '../src/Bindings/Validator'
 
 test.group('Validator rules | phone', () => {
   test('return false when value is not a valid phone number', (assert) => {

@@ -8,8 +8,10 @@
  */
 
 import * as helpers from '../src/Helpers'
-import * as rules from '../src/Validator'
+import * as rules from '../src/Bindings/Validator'
 import { RelayServices } from '../src/RelayServices'
+import { configureDb } from '../src/Db'
+import { configureModel } from '../src/Db/BaseModel'
 
 export default class BaseProvider {
   constructor (public container) {
@@ -23,6 +25,15 @@ export default class BaseProvider {
       const Config = this.container.use('Adonis/Src/Config')
       const Logger = this.container.use('Adonis/Src/Logger')
       return new RelayServices(Config.get('services'), Logger)
+    })
+
+    this.container.singleton('Relay/Db', () => {
+      const Config = this.container.use('Adonis/Src/Config')
+      return configureDb(Config)
+    })
+
+    this.container.singleton('Relay/BaseModel', () => {
+      return configureModel(this.container.use('Relay/Db'))
     })
   }
 
