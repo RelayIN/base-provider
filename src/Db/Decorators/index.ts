@@ -9,11 +9,10 @@
 
 import 'reflect-metadata'
 import decamelize from 'decamelize'
-import { ColumnNode } from '../../Contracts'
+import { ColumnContract, ColumnNode } from '../../Contracts'
 
 const PROP_TYPE = 'design:type'
 const ALLOWED_TYPES = [String, Number, Boolean, Object]
-type DecoratorOptions = ColumnNode & { columnName: string }
 
 /**
  * Returns error when attempting to override existing primary key
@@ -39,16 +38,17 @@ function invalidDefaultValue (model: string, column: string, type: string) {
 /**
  * Define a primary column
  */
-export function PrimaryColumn (options: Partial<Exclude<DecoratorOptions, 'primary'>> = {}) {
+export const PrimaryColumn: ColumnContract = function PrimaryColumn (options = {}) {
   return Column(Object.assign({ primary: true }, options))
 }
 
 /**
  * A decorator function to mark class fields as columns
  */
-export function Column (options: Partial<DecoratorOptions> = {}) {
+export const Column: ColumnContract = function Column (options = {}) {
   return function ColumnDecorator (target: any, key: string) {
     const columnName = options.columnName || decamelize(key)
+
     const column: ColumnNode = Object.assign({
       type: Reflect.getMetadata(PROP_TYPE, target, key),
       primary: false,

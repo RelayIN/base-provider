@@ -13,6 +13,7 @@ import { RelayServices } from '../src/RelayServices'
 import { configureDb } from '../src/Db'
 import { configureModel } from '../src/Db/BaseModel'
 import { JSONAPISerializer } from '../src/Db/Serializers/JsonApi'
+import { Column, PrimaryColumn } from '../src/Db/Decorators'
 
 export default class BaseProvider {
   constructor (public container) {
@@ -33,11 +34,14 @@ export default class BaseProvider {
       return configureDb(Config)
     })
 
-    this.container.singleton('Relay/BaseModel', () => {
+    this.container.singleton('Relay/Orm/BaseModel', () => {
       return configureModel(this.container.use('Relay/Db'))
     })
 
-    this.container.singleton('Relay/JsonApiSerializer', () => {
+    this.container.singleton('Relay/Orm/Column', () => Column)
+    this.container.singleton('Relay/Orm/PrimaryColumn', () => PrimaryColumn)
+
+    this.container.singleton('Relay/Orm/JsonApiSerializer', () => {
       return new JSONAPISerializer()
     })
   }

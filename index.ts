@@ -13,13 +13,14 @@ export interface RelayHelpersContract {
 
 export {
   RelayServicesContract,
-  HttpOptions,
   ServiceOptions,
   BaseModelConstructorContract,
   BaseModelContract,
   ModelRefs,
   JSONAPIRootNode,
   JSONAPISerializerContract,
+  ColumnNode,
+  ColumnContract,
 } from './src/Contracts'
 
 export { PrimaryColumn, Column } from './src/Db/Decorators'

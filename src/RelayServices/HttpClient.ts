@@ -8,8 +8,8 @@
  */
 
 import * as got from 'got'
-import { HttpClientContract, ServiceOptions, HttpOptions } from '../Contracts'
 import { HttpResponse } from './HttpResponse'
+import { HttpClientContract, ServiceOptions, HttpResponseContract } from '../Contracts'
 
 /**
  * Http client class is used to make an HTTP request to a given service
@@ -25,15 +25,15 @@ export class HttpClient implements HttpClientContract {
    * Returns a configured instance of `got` based upon the user
    * config defined inside `config/services.ts` file.
    */
-  private _getClient () {
-    const options: any = {
+  private _getClient (): got.GotInstance<got.GotJSONFn> {
+    const options: got.GotJSONOptions = {
       baseUrl: `${this._config.baseUrl}/${this._config.version}`,
       json: true,
       hooks: {},
     }
 
     if (this._debug) {
-      options.hooks.beforeRequest = [
+      options.hooks!.beforeRequest = [
         (options: any) => {
           this._logger.debug({
             url: options.href,
@@ -60,7 +60,11 @@ export class HttpClient implements HttpClientContract {
    * Perform an HTTP request on a given action. Make sure the actions
    * are defined inside the service config.
    */
-  public async perform (name: string, options: Partial<HttpOptions>) {
+
+  public async perform (
+    name: string,
+    options: Pick<got.GotJSONOptions, Exclude<keyof got.GotJSONOptions, 'json' | 'baseUrl'>>,
+  ): Promise<HttpResponseContract> {
     const action = this._config.actions[name]
     if (!action) {
       throw new Error(`Missing ${name} action`)
