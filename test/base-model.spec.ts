@@ -12,6 +12,7 @@ import { configureModel } from '../src/Db/BaseModel'
 import { configureDb } from '../src/Db'
 import { FakeConfig } from './helpers'
 import { Column } from '../src/Db/Decorators'
+import { ModelRefs } from '../src/Contracts'
 
 const BaseModel = configureModel(configureDb(new FakeConfig()))
 
@@ -23,10 +24,13 @@ test.group('BaseModel', () => {
 
       @Column()
       public firstName: string
+
+      public static refs: ModelRefs<keyof User>
     }
 
     const user = new User()
     assert.isFalse(user.$isDirty)
+    assert.deepEqual(User.refs, { username: 'username', firstName: 'first_name' })
   })
 
   test('return isDirty false when columns have default value', (assert) => {

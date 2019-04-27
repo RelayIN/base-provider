@@ -9,6 +9,24 @@
 
 import * as Knex from 'knex'
 
+/**
+ * Converts array to an object with array values
+ * as object keys
+ */
+export type Refs<T extends any[]> = {
+  [Y in T[number]]: string
+}
+
+/**
+ * Filter model whitelisted properties
+ */
+export type FilterModelProps<T extends any> = Exclude<T, '$attributes' | '$isNew' | '$isDirty' | '$dirty'>
+
+/**
+ * Dynamic list of model references
+ */
+export type ModelRefs<T extends any> = Refs<FilterModelProps<T>[]>
+
 export type HttpOptions = {
   headers: {
     [key: string]: any,
@@ -73,9 +91,16 @@ export interface BaseModelConstructorContract<Model extends BaseModelContract> {
   new (): Model,
   table: string,
   primaryKey: string,
+
+  query <T extends BaseModelContract> (
+    this: BaseModelConstructorContract<T>,
+    customDb?: Knex,
+  ): RepositoryContract<T>,
+
   columns: {
     [key: string]: ColumnNode,
   },
+
   db: Knex
 }
 

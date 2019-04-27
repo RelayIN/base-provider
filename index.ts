@@ -10,3 +10,12 @@
 export interface RelayHelpersContract {
   exec<T extends any> (fn: Promise<T>): Promise<[Error | null, T | null]>,
 }
+
+export {
+  RelayServicesContract,
+  HttpOptions,
+  ServiceOptions,
+  BaseModelConstructorContract,
+  BaseModelContract,
+  ModelRefs,
+} from './src/Contracts'

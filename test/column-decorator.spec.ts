@@ -9,7 +9,7 @@
 
 import * as test from 'japa'
 import { Column } from '../src/Db/Decorators'
-import { ColumnNode } from '../src/Contracts'
+import { ColumnNode, ModelRefs } from '../src/Contracts'
 
 test.group('Decorators | Column', () => {
   test('generate meta data with defaults', (assert) => {
@@ -17,6 +17,8 @@ test.group('Decorators | Column', () => {
       public static columns: { [key: string]: ColumnNode } = {}
       @Column({})
       public username: string
+
+      public static refs: ModelRefs<keyof Foo>
     }
 
     assert.deepEqual(Foo.columns, {
@@ -30,6 +32,8 @@ test.group('Decorators | Column', () => {
         serializeAs: 'username',
       },
     })
+
+    assert.deepEqual(Foo.refs, { username: 'username' })
   })
 
   test('set column as primary', (assert) => {
@@ -39,6 +43,8 @@ test.group('Decorators | Column', () => {
 
       @Column({ primary: true })
       public username: string
+
+      public static refs: ModelRefs<keyof Foo>
     }
 
     assert.equal(Foo.primaryKey, 'username')
@@ -53,6 +59,8 @@ test.group('Decorators | Column', () => {
         serializeAs: 'username',
       },
     })
+
+    assert.deepEqual(Foo.refs, { username: 'username' })
   })
 
   test('raise error when 2 keys are defined as primary', (assert) => {
@@ -86,6 +94,8 @@ test.group('Decorators | Column', () => {
 
       @Column({ serialize: false })
       public username: string
+
+      public static refs: ModelRefs<keyof Foo>
     }
 
     assert.deepEqual(Foo.columns, {
@@ -108,6 +118,8 @@ test.group('Decorators | Column', () => {
         serializeAs: 'username',
       },
     })
+
+    assert.deepEqual(Foo.refs, { username: 'username', id: 'id' })
   })
 
   test('define different serialization key', (assert) => {
