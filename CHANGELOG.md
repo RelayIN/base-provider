@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/thetutlage/base-provider/compare/1.0.3...1.0.4) (2019-04-27)
+
+
+### Features
+
+* export missing types ([#11](https://github.com/thetutlage/base-provider/issues/11)) ([c950aa3](https://github.com/thetutlage/base-provider/commit/c950aa3))
+
+
+
 ## 1.0.3 (2019-04-27)
 
 
