@@ -13,6 +13,7 @@ import { ColumnNode } from '../../Contracts'
 
 const PROP_TYPE = 'design:type'
 const ALLOWED_TYPES = [String, Number, Boolean, Object]
+type DecoratorOptions = ColumnNode & { columnName: string }
 
 /**
  * Returns error when attempting to override existing primary key
@@ -36,9 +37,16 @@ function invalidDefaultValue (model: string, column: string, type: string) {
 }
 
 /**
+ * Define a primary column
+ */
+export function PrimaryColumn (options: Partial<Exclude<DecoratorOptions, 'primary'>> = {}) {
+  return Column(Object.assign({ primary: true }, options))
+}
+
+/**
  * A decorator function to mark class fields as columns
  */
-export function Column (options: Partial<ColumnNode & { columnName: string }> = {}) {
+export function Column (options: Partial<DecoratorOptions> = {}) {
   return function ColumnDecorator (target: any, key: string) {
     const columnName = options.columnName || decamelize(key)
     const column: ColumnNode = Object.assign({

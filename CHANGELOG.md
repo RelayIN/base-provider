@@ -1,3 +1,12 @@
+## [1.0.5](https://github.com/thetutlage/base-provider/compare/1.0.4...1.0.5) (2019-04-27)
+
+
+### Features
+
+* **repo:** add more query builder methods ([be17bc1](https://github.com/thetutlage/base-provider/commit/be17bc1))
+
+
+
 ## [1.0.4](https://github.com/thetutlage/base-provider/compare/1.0.3...1.0.4) (2019-04-27)
 
 
