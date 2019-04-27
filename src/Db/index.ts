@@ -24,6 +24,7 @@ export function configureDb (config): Knex {
   /**
    * Pretty print queries when `LOG_QUERIES` is set to true
    */
+  /* istanbul ignore next */
   if (process.env.LOG_QUERIES) {
     const colorize = require('igniculus')({
       standardKeywords: { fg: 'cyan', casing: 'uppercase' },

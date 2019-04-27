@@ -18,6 +18,8 @@ export {
   BaseModelConstructorContract,
   BaseModelContract,
   ModelRefs,
+  JSONAPIRootNode,
+  JSONAPISerializerContract,
 } from './src/Contracts'
 
 export { PrimaryColumn, Column } from './src/Db/Decorators'
