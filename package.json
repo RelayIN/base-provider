@@ -50,6 +50,7 @@
     "knex": "^0.16.5",
     "libphonenumber-js": "^1.7.15",
     "pg": "^7.10.0",
+    "pluralize": "^7.0.0",
     "reflect-metadata": "^0.1.13"
   },
   "nyc": {

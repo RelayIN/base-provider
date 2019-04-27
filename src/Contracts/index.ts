@@ -101,6 +101,8 @@ export interface BaseModelConstructorContract<Model extends BaseModelContract> {
     [key: string]: ColumnNode,
   },
 
+  bootIfNotBooted (): void,
+
   db: Knex
 }
 
@@ -112,6 +114,7 @@ export interface BaseModelContract {
   $dirty: any,
   $isNew: boolean,
   $isDirty: boolean,
+  save (): Promise<void>,
 }
 
 export type WhereCallback<Repository> = (query: Repository) => any
@@ -139,6 +142,7 @@ export interface QueryBuilderContract {
 export interface RepositoryContract<Model extends BaseModelContract> {
   findBy (key: string, value: any): Promise<Model | null>,
   find (value: any): Promise<Model | null>,
+  first (): Promise<Model | null>,
   fetch (): Promise<Model[]>,
   persist (model: Model): Promise<void>,
 }

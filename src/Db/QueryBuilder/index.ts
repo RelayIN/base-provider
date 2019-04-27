@@ -30,7 +30,9 @@ export class QueryBuilder<Model extends BaseModelContract> implements QueryBuild
   constructor (
     protected parent: BaseModelConstructorContract<Model>,
     protected db: Knex,
-  ) {}
+  ) {
+    this.parent.bootIfNotBooted()
+  }
 
   public whereNull (key: string): this {
     this.builder.whereNull(key)

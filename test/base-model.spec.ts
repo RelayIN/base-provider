@@ -61,4 +61,45 @@ test.group('BaseModel', () => {
     assert.isTrue(user.$isDirty)
     assert.deepEqual(user.$dirty, { username: 'virk' })
   })
+
+  test('set table and primary key when bootIfNotBooted is called', (assert) => {
+    class User extends BaseModel {
+      @Column({ default: 'virk' })
+      public username: string
+
+      @Column()
+      public firstName: string
+    }
+
+    User.bootIfNotBooted()
+    assert.equal(User.table, 'users')
+    assert.equal(User.primaryKey, 'id')
+  })
+
+  test('do not override explicitly defined table name', (assert) => {
+    class User extends BaseModel {
+      @Column({ default: 'virk' })
+      public username: string
+
+      @Column()
+      public firstName: string
+
+      public static table = 'my_users'
+    }
+
+    User.bootIfNotBooted()
+    assert.equal(User.table, 'my_users')
+    assert.equal(User.primaryKey, 'id')
+  })
+
+  test('do not override explicitly defined primary key', (assert) => {
+    class User extends BaseModel {
+      @Column({ primary: true })
+      public userId: string
+    }
+
+    User.bootIfNotBooted()
+    assert.equal(User.table, 'users')
+    assert.equal(User.primaryKey, 'user_id')
+  })
 })
