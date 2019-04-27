@@ -24,7 +24,7 @@ jobs:
       - run: npm test
   build_latest:
     docker:
-      - image: 'circleci/node:latest'
+      - image: 'circleci/node:11.13.0'
     working_directory: ~/app
     steps:
       - checkout
