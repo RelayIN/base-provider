@@ -12,6 +12,7 @@ import * as rules from '../src/Bindings/Validator'
 import { RelayServices } from '../src/RelayServices'
 import { configureDb } from '../src/Db'
 import { configureModel } from '../src/Db/BaseModel'
+import { JSONAPISerializer } from '../src/Db/Serializers/JsonApi'
 
 export default class BaseProvider {
   constructor (public container) {
@@ -34,6 +35,10 @@ export default class BaseProvider {
 
     this.container.singleton('Relay/BaseModel', () => {
       return configureModel(this.container.use('Relay/Db'))
+    })
+
+    this.container.singleton('Relay/JsonApiSerializer', () => {
+      return new JSONAPISerializer()
     })
   }
 

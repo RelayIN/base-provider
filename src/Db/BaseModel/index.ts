@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import camelcase from 'camelcase'
 import decamelize from 'decamelize'
 import { plural } from 'pluralize'
 import * as Knex from 'knex'
@@ -15,6 +16,10 @@ import { Repository } from '../Repository'
 import { getDirty } from '../Attributes'
 
 abstract class BaseModel implements BaseModelContract {
+  constructor () {
+    this.constructor['bootIfNotBooted']()
+  }
+
   /**
    * Returns a new repository instance to execute queries
    * scoped to this model only
@@ -34,6 +39,7 @@ abstract class BaseModel implements BaseModelContract {
   public static primaryKey: string
   public static table: string
   public static db: Knex
+  public static resource: string
   protected static booted: boolean = false
 
   /**
@@ -54,6 +60,10 @@ abstract class BaseModel implements BaseModelContract {
     this.booted = true
     if (!this.table) {
       this.table = plural(decamelize(this.name))
+    }
+
+    if (!this.resource) {
+      this.resource = plural(camelcase(this.name))
     }
 
     if (!this.primaryKey) {

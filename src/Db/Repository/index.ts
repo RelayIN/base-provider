@@ -62,12 +62,12 @@ export class Repository <Model extends BaseModelContract>
    * Execute the query by adding `limit=1` clause to it
    */
   public async first (): Promise<Model | null> {
-    const rows = await this.builder.limit(1)
-    if (!rows.length) {
+    const row = await this.builder.first()
+    if (!row) {
       return null
     }
 
-    return this._newUp(rows[0], true)
+    return this._newUp(row, true)
   }
 
   /**

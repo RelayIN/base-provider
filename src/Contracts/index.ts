@@ -27,6 +27,9 @@ export type FilterModelProps<T extends any> = Exclude<T, '$attributes' | '$isNew
  */
 export type ModelRefs<T extends any> = Refs<FilterModelProps<T>[]>
 
+/**
+ * Options for got
+ */
 export type HttpOptions = {
   headers: {
     [key: string]: any,
@@ -91,6 +94,7 @@ export interface BaseModelConstructorContract<Model extends BaseModelContract> {
   new (): Model,
   table: string,
   primaryKey: string,
+  resource: string,
 
   query <T extends BaseModelContract> (
     this: BaseModelConstructorContract<T>,
@@ -115,6 +119,21 @@ export interface BaseModelContract {
   $isNew: boolean,
   $isDirty: boolean,
   save (): Promise<void>,
+}
+
+export type JSONAPIRootNode = {
+  id: string | number,
+  type: string,
+  attributes: any,
+}
+
+export interface JSONAPISerializerContract {
+  serialize (model: null): null
+  serialize (model: BaseModelContract): JSONAPIRootNode
+  serialize (model: BaseModelContract[]): JSONAPIRootNode[]
+  serialize (
+    model: null | BaseModelContract | BaseModelContract[],
+  ): null | JSONAPIRootNode | JSONAPIRootNode[]
 }
 
 export type WhereCallback<Repository> = (query: Repository) => any

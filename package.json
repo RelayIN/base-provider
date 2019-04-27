@@ -12,7 +12,7 @@
   "scripts": {
     "mrm": "mrm --preset=@adonisjs/mrm-preset",
     "pretest": "npm run lint",
-    "test": "node japaFile.js",
+    "test": "nyc node japaFile.js",
     "prepublishOnly": "npm run build",
     "clean": "del build",
     "compile": "npm run lint && npm run clean && tsc",
@@ -33,6 +33,7 @@
     "fs-extra": "^7.0.1",
     "japa": "^2.0.9",
     "mrm": "^1.2.1",
+    "nyc": "^14.0.0",
     "pkg-ok": "^2.3.1",
     "sqlite3": "^4.0.6",
     "ts-node": "^8.0.3",
@@ -43,6 +44,7 @@
   },
   "dependencies": {
     "@adonisjs/utils": "^1.4.4",
+    "camelcase": "^5.3.1",
     "decamelize": "^3.2.0",
     "got": "^9.6.0",
     "igniculus": "^1.5.0",
