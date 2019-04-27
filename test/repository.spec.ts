@@ -19,8 +19,6 @@ import { FakeConfig, migrateDb, cleanup, db } from './helpers'
 const BaseModel = configureModel(configureDb(new FakeConfig()))
 
 class User extends BaseModel {
-  public static table = 'users'
-
   @Column({ primary: true })
   public id: number
 

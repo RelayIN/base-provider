@@ -101,6 +101,8 @@ export interface BaseModelConstructorContract<Model extends BaseModelContract> {
     [key: string]: ColumnNode,
   },
 
+  bootIfNotBooted (): void,
+
   db: Knex
 }
 

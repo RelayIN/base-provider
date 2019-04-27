@@ -7,6 +7,8 @@
  * file that was distributed with this source code.
  */
 
+import decamelize from 'decamelize'
+import { plural } from 'pluralize'
 import * as Knex from 'knex'
 import { BaseModelContract, ColumnNode, BaseModelConstructorContract } from '../../Contracts'
 import { Repository } from '../Repository'
@@ -50,6 +52,34 @@ abstract class BaseModel implements BaseModelContract {
   public static primaryKey: string
   public static table: string
   public static db: Knex
+  protected static booted: boolean = false
+
+  /**
+   * User land boot method
+   */
+  protected static boot () {}
+
+  /**
+   * Boot model if not already booted. This method is
+   * called by `Repository` constructor to keep the
+   * call transparent for the end user.
+   */
+  public static bootIfNotBooted () {
+    if (this.booted) {
+      return
+    }
+
+    this.booted = true
+    if (!this.table) {
+      this.table = plural(decamelize(this.name))
+    }
+
+    if (!this.primaryKey) {
+      this.primaryKey = 'id'
+    }
+
+    this.boot()
+  }
 }
 
 /**
