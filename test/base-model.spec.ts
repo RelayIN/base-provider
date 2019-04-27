@@ -8,8 +8,12 @@
  */
 
 import * as test from 'japa'
-import { BaseModel } from '../src/Db/BaseModel'
+import { configureModel } from '../src/Db/BaseModel'
+import { configureDb } from '../src/Db'
+import { FakeConfig } from './helpers'
 import { Column } from '../src/Db/Decorators'
+
+const BaseModel = configureModel(configureDb(new FakeConfig()))
 
 test.group('BaseModel', () => {
   test('return isDirty false for newly instantiated models', (assert) => {

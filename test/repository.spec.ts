@@ -11,10 +11,12 @@ import * as test from 'japa'
 import * as QueryBuilder from 'knex/lib/query/builder'
 
 import { configureDb } from '../src/Db'
-import { BaseModel } from '../src/Db/BaseModel'
+import { configureModel } from '../src/Db/BaseModel'
 import { Repository } from '../src/Db/Repository'
 import { Column } from '../src/Db/Decorators'
 import { FakeConfig, migrateDb, cleanup, db } from './helpers'
+
+const BaseModel = configureModel(configureDb(new FakeConfig()))
 
 class User extends BaseModel {
   public static table = 'users'

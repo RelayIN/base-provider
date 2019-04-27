@@ -8,9 +8,13 @@
 */
 
 import * as test from 'japa'
-import { BaseModel } from '../src/Db/BaseModel'
+import { configureDb } from '../src/Db'
+import { configureModel } from '../src/Db/BaseModel'
 import { Column } from '../src/Db/Decorators'
+import { FakeConfig } from './helpers'
 import { syncAttributes, reComputeAttributes, getDirty, validate } from '../src/Db/Attributes'
+
+const BaseModel = configureModel(configureDb(new FakeConfig()))
 
 test.group('Attributes | Sync attributes', () => {
   test('sync attributes with the given data', (assert) => {
