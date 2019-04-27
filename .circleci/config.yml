@@ -4,7 +4,7 @@ workflows:
   workflow:
     jobs:
       - build_10.15.3
-      - build_latest
+      - build_11.13.0
 jobs:
   build_10.15.3:
     docker:
@@ -14,13 +14,13 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - 'v1-build_11.13.0-{{ checksum "package.json" }}'
-            - v1-build_11.13.0-
+            - 'v1-build_10.15.3-{{ checksum "package.json" }}'
+            - v1-build_10.15.3-
       - run: npm install
       - save_cache:
           paths:
             - node_modules
-          key: 'v1-build_11.13.0-{{ checksum "package.json" }}'
+          key: 'v1-build_10.15.3-{{ checksum "package.json" }}'
       - run: npm test
   build_11.13.0:
     docker:
