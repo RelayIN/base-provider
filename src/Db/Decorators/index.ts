@@ -85,5 +85,11 @@ export function Column (options: Partial<ColumnNode & { columnName: string }> = 
      */
     target.constructor.columns = target.constructor.columns || {}
     target.constructor.columns[columnName] = column
+
+    /**
+     * Update columns inside refs for quick dynamic access
+     */
+    target.constructor.refs = target.constructor.refs || {}
+    target.constructor.refs[key] = columnName
   }
 }
