@@ -12,7 +12,7 @@ import decamelize from 'decamelize'
 import { ColumnContract, ColumnNode } from '../../Contracts'
 
 const PROP_TYPE = 'design:type'
-const ALLOWED_TYPES = [String, Number, Boolean, Object]
+const ALLOWED_TYPES = [String, Number, Boolean, Object, Date]
 
 /**
  * Returns error when attempting to override existing primary key
