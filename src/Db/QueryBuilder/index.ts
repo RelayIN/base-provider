@@ -25,13 +25,14 @@ export class QueryBuilder<Model extends BaseModelContract> implements QueryBuild
    * Creating instance of query builder and use table name
    * from the parent model
    */
-  protected builder: Knex.QueryBuilder = this.db.table(this.parent.table)
+  protected builder: Knex.QueryBuilder
 
   constructor (
     protected parent: BaseModelConstructorContract<Model>,
     protected db: Knex,
   ) {
     this.parent.bootIfNotBooted()
+    this.builder = this.db.table(this.parent.table)
   }
 
   public whereNull (key: string): this {

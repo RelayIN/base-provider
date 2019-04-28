@@ -71,7 +71,7 @@ export interface RelayServicesContract {
  * Column node added via decorator
  */
 export type ColumnNode = {
-  type: StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor,
+  type: StringConstructor | NumberConstructor | BooleanConstructor | ObjectConstructor | DateConstructor,
   primary: boolean,
   ref: string,
   serialize: boolean,
