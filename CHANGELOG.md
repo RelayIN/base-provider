@@ -1,3 +1,12 @@
+## [1.0.7](https://github.com/thetutlage/base-provider/compare/1.0.6...1.0.7) (2019-04-28)
+
+
+### Bug Fixes
+
+* **querybuilder:** create builder instance after model boot ([4ff2e75](https://github.com/thetutlage/base-provider/commit/4ff2e75))
+
+
+
 ## [1.0.6](https://github.com/thetutlage/base-provider/compare/1.0.5...1.0.6) (2019-04-27)
 
 
