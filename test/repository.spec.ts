@@ -49,6 +49,32 @@ test.group('Repository', (group) => {
     assert.equal(sql, 'select * from `users` where `username` = ?')
   })
 
+  test('add where clause with operator', (assert) => {
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const sql = repo.where('age', '>', 22).toSQL().sql
+    assert.equal(sql, 'select * from `users` where `age` > ?')
+  })
+
+  test('add where wrapped clause', (assert) => {
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const sql = repo.where((query) => {
+      query.where('username', 'virk')
+    }).toSQL().sql
+    assert.equal(sql, 'select * from `users` where (`username` = ?)')
+  })
+
+  test('add whereNull clause to the query', (assert) => {
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const sql = repo.whereNull('deleted_at').toSQL().sql
+    assert.equal(sql, 'select * from `users` where `deleted_at` is null')
+  })
+
+  test('add whereNotNull clause to the query', (assert) => {
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const sql = repo.whereNotNull('deleted_at').toSQL().sql
+    assert.equal(sql, 'select * from `users` where `deleted_at` is not null')
+  })
+
   test('add whereIn clause to the query', (assert) => {
     const repo = new Repository(User, configureDb(new FakeConfig()))
     const sql = repo.whereIn('type', ['admin', 'guest']).toSQL().sql
@@ -94,6 +120,36 @@ test.group('Repository', (group) => {
 
     const repo = new Repository(User, configureDb(new FakeConfig()))
     const user = await repo.findBy('username', 'virk')
+
+    assert.instanceOf(user, User)
+    assert.deepEqual(user!.$attributes, {
+      id: 1,
+      full_name: 'Harminder Virk',
+      username: 'virk',
+    })
+
+    await db().table('users').truncate()
+
+    assert.deepEqual(user!.$dirty, {})
+    assert.isFalse(user!.$isNew)
+    assert.isFalse(user!.$isDirty)
+  })
+
+  test('return null when zero rows are found', async (assert) => {
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const user = await repo.findBy('username', 'virk')
+    assert.isNull(user)
+  })
+
+  test('use primaryKey when using find method', async (assert) => {
+    await db().table('users').insert({
+      username: 'virk',
+      full_name: 'Harminder Virk',
+      email: 'virk@adonisjs.com',
+    })
+
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const user = await repo.find(1)
 
     assert.instanceOf(user, User)
     assert.deepEqual(user!.$attributes, {
@@ -178,6 +234,12 @@ test.group('Repository', (group) => {
     assert.deepEqual(users[0].$dirty, {})
     assert.isFalse(users[0].$isNew)
     assert.isFalse(users[0].$isDirty)
+  })
+
+  test('return empty array when zero rows are found', async (assert) => {
+    const repo = new Repository(User, configureDb(new FakeConfig()))
+    const users = await repo.fetch()
+    assert.lengthOf(users, 0)
   })
 
   test('wrap first result in model instance', async (assert) => {

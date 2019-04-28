@@ -7,6 +7,7 @@
  * file that was distributed with this source code.
  */
 
+import { GotJSONOptions } from 'got'
 import * as Knex from 'knex'
 
 /**
@@ -27,24 +28,9 @@ export type FilterModelProps<T extends any> = Exclude<T, '$attributes' | '$isNew
  */
 export type ModelRefs<T extends any> = Refs<FilterModelProps<T>[]>
 
-export type HttpOptions = {
-  headers: {
-    [key: string]: any,
-  },
-  stream: boolean,
-  body: any,
-  method: string,
-  encoding: string,
-  form: boolean,
-  json: boolean,
-  query: any,
-  timeout: number,
-  retry: number,
-  followRedirect: boolean,
-  decompress: boolean,
-  cache: boolean,
-}
-
+/**
+ * Http service options
+ */
 export type ServiceOptions = {
   baseUrl: string,
   version: string,
@@ -53,17 +39,28 @@ export type ServiceOptions = {
   },
 }
 
+/**
+ * Shape of HTTP response
+ */
 export interface HttpResponseContract {
   body: any,
   error: any,
-  state: 'initiated' | 'success' | 'error',
+  status: number,
+  state: 'success' | 'error',
   hasValidationErrors: boolean,
   hasServerError: boolean,
 }
 
+/**
+ * Http client exposes the API to execute actions
+ * on a given service.
+ */
 export interface HttpClientContract {
   debug (): HttpClientContract,
-  perform (action: string, options: Partial<HttpOptions>): Promise<HttpResponseContract>,
+  perform (
+    action: string,
+    options: Pick<GotJSONOptions, Exclude<keyof GotJSONOptions, 'json' | 'baseUrl'>>,
+  ): Promise<HttpResponseContract>,
 }
 
 export interface RelayServicesContract {
@@ -84,6 +81,10 @@ export type ColumnNode = {
   enum?: any[],
 }
 
+export type ColumnContract = (
+  options?: Partial<ColumnNode & { columnName: string }>,
+) => ((target: any, key: string) => void)
+
 /**
  * Shape of static properties on the base model
  */
@@ -91,6 +92,7 @@ export interface BaseModelConstructorContract<Model extends BaseModelContract> {
   new (): Model,
   table: string,
   primaryKey: string,
+  resource: string,
 
   query <T extends BaseModelContract> (
     this: BaseModelConstructorContract<T>,
@@ -115,6 +117,28 @@ export interface BaseModelContract {
   $isNew: boolean,
   $isDirty: boolean,
   save (): Promise<void>,
+}
+
+/**
+ * Shape of JSONAPIRootNode returned by the [[JSONAPISerializer.serialize]]
+ * method
+ */
+export type JSONAPIRootNode = {
+  id: string | number,
+  type: string,
+  attributes: any,
+}
+
+/**
+ * JSONAPI serializer interface
+ */
+export interface JSONAPISerializerContract {
+  serialize (model: null): null
+  serialize (model: BaseModelContract): JSONAPIRootNode
+  serialize (model: BaseModelContract[]): JSONAPIRootNode[]
+  serialize (
+    model: null | BaseModelContract | BaseModelContract[],
+  ): null | JSONAPIRootNode | JSONAPIRootNode[]
 }
 
 export type WhereCallback<Repository> = (query: Repository) => any
