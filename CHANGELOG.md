@@ -1,3 +1,12 @@
+## [1.0.6](https://github.com/thetutlage/base-provider/compare/1.0.5...1.0.6) (2019-04-27)
+
+
+### Features
+
+* add support for JSONAPI serializer ([#13](https://github.com/thetutlage/base-provider/issues/13)) ([48a4572](https://github.com/thetutlage/base-provider/commit/48a4572))
+
+
+
 ## [1.0.5](https://github.com/thetutlage/base-provider/compare/1.0.4...1.0.5) (2019-04-27)
 
 
