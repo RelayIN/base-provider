@@ -1,3 +1,12 @@
+## [1.0.8](https://github.com/thetutlage/base-provider/compare/1.0.7...1.0.8) (2019-04-29)
+
+
+### Bug Fixes
+
+* interface query method must return repository and querybuilder contracts ([#16](https://github.com/thetutlage/base-provider/issues/16)) ([24d7cd0](https://github.com/thetutlage/base-provider/commit/24d7cd0))
+
+
+
 ## [1.0.7](https://github.com/thetutlage/base-provider/compare/1.0.6...1.0.7) (2019-04-28)
 
 
