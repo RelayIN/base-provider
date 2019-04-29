@@ -97,7 +97,7 @@ export interface BaseModelConstructorContract<Model extends BaseModelContract> {
   query <T extends BaseModelContract> (
     this: BaseModelConstructorContract<T>,
     customDb?: Knex,
-  ): RepositoryContract<T>,
+  ): QueryBuilderContract & RepositoryContract<T>,
 
   columns: {
     [key: string]: ColumnNode,
@@ -168,5 +168,6 @@ export interface RepositoryContract<Model extends BaseModelContract> {
   find (value: any): Promise<Model | null>,
   first (): Promise<Model | null>,
   fetch (): Promise<Model[]>,
+  exec (): Promise<any>,
   persist (model: Model): Promise<void>,
 }
