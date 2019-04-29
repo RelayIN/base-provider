@@ -50,12 +50,19 @@ export class Repository <Model extends BaseModelContract>
    * of model instance.
    */
   public async fetch (): Promise<Model[]> {
-    const rows = await this.builder
+    const rows = await this.exec()
     if (!rows.length) {
       return []
     }
 
     return rows.map((row: any) => this._newUp(row, true))
+  }
+
+  /**
+   * Executes the query builder chain
+   */
+  public async exec () {
+    return this.builder
   }
 
   /**
