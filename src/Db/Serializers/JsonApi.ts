@@ -21,14 +21,14 @@ export class JSONAPISerializer implements JSONAPISerializerContract {
 
     const output: JSONAPIRootNode = {
       attributes: {},
-      id: model.$attributes[modelConstructor.primaryKey],
+      id: model.$attributes[modelConstructor.primaryKey.column],
       type: modelConstructor.resource,
     }
 
     return Object.keys(columns).reduce((result, key) => {
       const column = columns[key]
 
-      if (column.serialize && !column.primary && column.ref !== modelConstructor.primaryKey) {
+      if (column.serialize && column.ref !== modelConstructor.primaryKey.ref) {
         result.attributes[column.serializeAs] = model.$attributes[key]
       }
 

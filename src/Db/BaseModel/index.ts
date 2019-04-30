@@ -36,7 +36,11 @@ abstract class BaseModel implements BaseModelContract {
    * can instantiate fresh copy for each model.
    */
   public static columns: { [key: string]: ColumnNode }
-  public static primaryKey: string
+  public static primaryKey: {
+    column: string,
+    ref: string,
+    increments: boolean,
+  }
   public static table: string
   public static db: Knex
   public static resource: string
@@ -67,7 +71,11 @@ abstract class BaseModel implements BaseModelContract {
     }
 
     if (!this.primaryKey) {
-      this.primaryKey = 'id'
+      this.primaryKey = {
+        column: 'id',
+        ref: 'id',
+        increments: true,
+      }
     }
 
     this.boot()

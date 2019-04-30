@@ -78,14 +78,18 @@ export const Column: ColumnContract = function Column (options = {}) {
      * Raise error when multiple keys are defined primary
      */
     if (target.constructor.primaryKey && column.primary) {
-      throw cannotOverridePrimaryKey(target.constructor.name, target.constructor.primaryKey)
+      throw cannotOverridePrimaryKey(target.constructor.name, target.constructor.primaryKey.ref)
     }
 
     /**
      * Update primary column when primary key is defined
      */
     if (column.primary) {
-      target.constructor.primaryKey = columnName
+      target.constructor.primaryKey = {
+        column: columnName,
+        ref: key,
+        increments: options.increments === undefined ? true : options.increments,
+      }
     }
 
     /**
