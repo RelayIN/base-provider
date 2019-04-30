@@ -323,34 +323,42 @@ test.group('Repository', (group) => {
       queries.push(sqlQuery)
     }
 
+    class Post extends BaseModel {
+      @Column({ primary: true })
+      public postId: number
+
+      @Column()
+      public title: string
+    }
+
     const db = configureDb(new FakeConfig())
     db.on('query', queryListener)
 
-    const repo = new Repository(User, db)
-    const user = new User()
-    user.username = 'virk'
-    user.fullName = 'H virk'
-    await repo.persist(user)
-    assert.isFalse(user.$isNew)
-    assert.isFalse(user.$isDirty)
+    const repo = new Repository(Post, db)
+    const post = new Post()
+    post.title = 'Getting started with Relay'
+    await repo.persist(post)
 
-    user.fullName = 'Harminder virk'
-    assert.isTrue(user.$isDirty)
-    assert.deepEqual(user.$dirty, { full_name: 'Harminder virk' })
+    assert.isFalse(post.$isNew)
+    assert.isFalse(post.$isDirty)
 
-    await repo.persist(user)
+    post.title = 'Relay 101'
+    assert.isTrue(post.$isDirty)
+    assert.deepEqual(post.$dirty, { title: 'Relay 101' })
+
+    await repo.persist(post)
 
     db['removeAllListeners']('query', queryListener)
     await db.table('users').truncate()
 
     assert.lengthOf(queries, 2)
-    assert.equal(queries[0].sql, 'insert into `users` (`full_name`, `username`) values (?, ?)')
-    assert.deepEqual(queries[0].bindings, ['H virk', 'virk'])
+    assert.equal(queries[0].sql, 'insert into `posts` (`title`) values (?)')
+    assert.deepEqual(queries[0].bindings, ['Getting started with Relay'])
 
-    assert.equal(queries[1].sql, 'update `users` set `full_name` = ? where `id` = ?')
-    assert.deepEqual(queries[1].bindings, ['Harminder virk', 1])
-    assert.isFalse(user.$isDirty)
-    assert.deepEqual(user.$attributes, { id: 1, username: 'virk', full_name: 'Harminder virk' })
+    assert.equal(queries[1].sql, 'update `posts` set `title` = ? where `post_id` = ?')
+    assert.deepEqual(queries[1].bindings, ['Relay 101', 1])
+    assert.isFalse(post.$isDirty)
+    assert.deepEqual(post.$attributes, { post_id: 1, title: 'Relay 101' })
   })
 
   test('persist model using save method', async (assert) => {

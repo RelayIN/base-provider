@@ -81,7 +81,7 @@ export class Repository <Model extends BaseModelContract>
    * Find a row using the primary key
    */
   public async find (value: any): Promise<Model | null> {
-    return this.findBy(this.parent.primaryKey, value)
+    return this.findBy(this.parent.primaryKey.column, value)
   }
 
   /**
@@ -90,22 +90,28 @@ export class Repository <Model extends BaseModelContract>
    */
   public async persist (model: Model): Promise<void> {
     const dirty = model.$dirty
+    const { column: primaryColumn, ref: primaryRef, increments } = this.parent.primaryKey
 
     /**
      * Always persist when model is new
      */
     if (model.$isNew) {
-      const query = this.db.client.constructor.name === 'Client_PG'
-        ? this.builder.returning(this.parent.primaryKey)
-        : this.builder
+      /**
+       * Add returning statement when using PostgreSQL
+       */
+      if (this.db.client.constructor.name === 'Client_PG') {
+        this.builder.returning(primaryColumn)
+      }
 
-      const id = await query.insert(dirty)
+      const id = await this.builder.insert(dirty)
       model.$isNew = false
 
       /**
-       * Update id on the model
+       * Update primary column on the model when increments=true
        */
-      model[this.parent.primaryKey] = id[0]
+      if (increments) {
+        model[primaryRef] = id[0]
+      }
 
       /**
        * Update attributes only after the model has been persisted to the DB
@@ -119,7 +125,7 @@ export class Repository <Model extends BaseModelContract>
      * the update
      */
     if (Object.keys(dirty).length) {
-      await this.builder.where(this.parent.primaryKey, model[this.parent.primaryKey]).update(dirty)
+      await this.builder.where(primaryColumn, model[primaryRef]).update(dirty)
       reComputeAttributes(model)
     }
   }

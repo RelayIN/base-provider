@@ -82,7 +82,7 @@ export type ColumnNode = {
 }
 
 export type ColumnContract = (
-  options?: Partial<ColumnNode & { columnName: string }>,
+  options?: Partial<ColumnNode & { columnName: string, increments: boolean }>,
 ) => ((target: any, key: string) => void)
 
 /**
@@ -91,7 +91,11 @@ export type ColumnContract = (
 export interface BaseModelConstructorContract<Model extends BaseModelContract> {
   new (): Model,
   table: string,
-  primaryKey: string,
+  primaryKey: {
+    column: string,
+    ref: string,
+    increments: boolean,
+  },
   resource: string,
 
   query <T extends BaseModelContract> (

@@ -39,7 +39,7 @@ test.group('Decorators | Column', () => {
   test('set column as primary', (assert) => {
     class Foo {
       public static columns: { [key: string]: ColumnNode } = {}
-      public static primaryKey: string
+      public static primaryKey: any
 
       @Column({ primary: true })
       public username: string
@@ -47,7 +47,11 @@ test.group('Decorators | Column', () => {
       public static refs: ModelRefs<keyof Foo>
     }
 
-    assert.equal(Foo.primaryKey, 'username')
+    assert.deepEqual(Foo.primaryKey, {
+      column: 'username',
+      ref: 'username',
+      increments: true,
+    })
     assert.deepEqual(Foo.columns, {
       username: {
         ref: 'username',
