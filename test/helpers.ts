@@ -42,9 +42,16 @@ export async function migrateDb () {
     table.string('full_name')
     table.timestamps()
   })
+
+  await db().schema.createTable('posts', (table) => {
+    table.increments('post_id')
+    table.string('title')
+    table.timestamps()
+  })
 }
 
 export async function cleanup () {
   await db().schema.dropTable('users')
+  await db().schema.dropTable('posts')
   await remove(join(__dirname, 'db.sqlite'))
 }

@@ -73,7 +73,11 @@ test.group('BaseModel', () => {
 
     User.bootIfNotBooted()
     assert.equal(User.table, 'users')
-    assert.equal(User.primaryKey, 'id')
+    assert.deepEqual(User.primaryKey, {
+      column: 'id',
+      ref: 'id',
+      increments: true,
+    })
   })
 
   test('do not override explicitly defined table name', (assert) => {
@@ -89,7 +93,11 @@ test.group('BaseModel', () => {
 
     User.bootIfNotBooted()
     assert.equal(User.table, 'my_users')
-    assert.equal(User.primaryKey, 'id')
+    assert.deepEqual(User.primaryKey, {
+      column: 'id',
+      ref: 'id',
+      increments: true,
+    })
   })
 
   test('do not override explicitly defined primary key', (assert) => {
@@ -100,6 +108,25 @@ test.group('BaseModel', () => {
 
     User.bootIfNotBooted()
     assert.equal(User.table, 'users')
-    assert.equal(User.primaryKey, 'user_id')
+    assert.deepEqual(User.primaryKey, {
+      column: 'user_id',
+      ref: 'userId',
+      increments: true,
+    })
+  })
+
+  test('set increments false', (assert) => {
+    class User extends BaseModel {
+      @Column({ primary: true, increments: false })
+      public userId: string
+    }
+
+    User.bootIfNotBooted()
+    assert.equal(User.table, 'users')
+    assert.deepEqual(User.primaryKey, {
+      column: 'user_id',
+      ref: 'userId',
+      increments: false,
+    })
   })
 })
