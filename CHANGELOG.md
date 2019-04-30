@@ -1,3 +1,12 @@
+## [1.0.9](https://github.com/thetutlage/base-provider/compare/1.0.8...1.0.9) (2019-04-30)
+
+
+### Bug Fixes
+
+* use correct keys for primaryKey column ([#17](https://github.com/thetutlage/base-provider/issues/17)) ([a2abb7e](https://github.com/thetutlage/base-provider/commit/a2abb7e))
+
+
+
 ## [1.0.8](https://github.com/thetutlage/base-provider/compare/1.0.7...1.0.8) (2019-04-29)
 
 
