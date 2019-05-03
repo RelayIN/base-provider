@@ -35,8 +35,12 @@ export type ServiceOptions = {
   baseUrl: string,
   version: string,
   actions: {
-    [key: string]: string,
+    [key: string]: string | ((params?: any) => string),
   },
+}
+
+export type ClientActionOptions = Pick<GotJSONOptions, Exclude<keyof GotJSONOptions, 'json' | 'baseUrl'>> & {
+  params?: any,
 }
 
 /**
@@ -57,12 +61,12 @@ export interface HttpResponseContract {
  */
 export interface HttpClientContract {
   debug (): HttpClientContract,
-  perform (
-    action: string,
-    options: Pick<GotJSONOptions, Exclude<keyof GotJSONOptions, 'json' | 'baseUrl'>>,
-  ): Promise<HttpResponseContract>,
+  perform (name: string, options: ClientActionOptions): Promise<HttpResponseContract>,
 }
 
+/**
+ * Relay services contract
+ */
 export interface RelayServicesContract {
   get (service: string): HttpClientContract
 }
