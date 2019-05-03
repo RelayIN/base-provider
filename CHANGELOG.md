@@ -1,3 +1,12 @@
+## [1.0.10](https://github.com/thetutlage/base-provider/compare/1.0.9...1.0.10) (2019-05-03)
+
+
+### Features
+
+* add support for defining service actions as functions ([#18](https://github.com/thetutlage/base-provider/issues/18)) ([2bc01c1](https://github.com/thetutlage/base-provider/commit/2bc01c1))
+
+
+
 ## [1.0.9](https://github.com/thetutlage/base-provider/compare/1.0.8...1.0.9) (2019-04-30)
 
 
