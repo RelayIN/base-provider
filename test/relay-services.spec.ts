@@ -114,6 +114,42 @@ test.group('Relay Services | Http client', () => {
     })
   })
 
+  test('call action function when defined as a function', async (assert) => {
+    const config = {
+      notifications: {
+        baseUrl: 'http://localhost:8000',
+        version: 'v1',
+        actions: {
+          sendOtp: (params: any) => {
+            return `sms/${params.type}/send`
+          },
+        },
+      },
+    }
+
+    const server = createServer((req, res) => {
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.write(JSON.stringify({ url: req.url, isJson: req.headers['accept'] === 'application/json' }))
+      res.end()
+    })
+    server.listen(8000)
+
+    const services = new RelayServices(config, fakeLogger)
+    const response = await services.get('notifications').perform('sendOtp', {
+      params: {
+        type: 'otp',
+      },
+    })
+    server.close()
+
+    assert.equal(response.status, 200)
+    assert.isFalse(response.hasServerError)
+    assert.deepEqual(response.body, {
+      url: '/v1/sms/otp/send',
+      isJson: true,
+    })
+  })
+
   test('consume validation errors when they exist', async (assert) => {
     const config = {
       notifications: {

@@ -9,7 +9,7 @@
 
 import * as got from 'got'
 import { HttpResponse } from './HttpResponse'
-import { HttpClientContract, ServiceOptions, HttpResponseContract } from '../Contracts'
+import { HttpClientContract, ServiceOptions, HttpResponseContract, ClientActionOptions } from '../Contracts'
 
 /**
  * Http client class is used to make an HTTP request to a given service
@@ -61,17 +61,21 @@ export class HttpClient implements HttpClientContract {
    * are defined inside the service config.
    */
 
-  public async perform (
-    name: string,
-    options: Pick<got.GotJSONOptions, Exclude<keyof got.GotJSONOptions, 'json' | 'baseUrl'>>,
-  ): Promise<HttpResponseContract> {
+  public async perform (name: string, options: ClientActionOptions): Promise<HttpResponseContract> {
     const action = this._config.actions[name]
     if (!action) {
       throw new Error(`Missing ${name} action`)
     }
 
+    let url: string
+    if (typeof (action) === 'function') {
+      url = action(options.params)
+    } else {
+      url = action
+    }
+
     try {
-      const response = await this._getClient()(action, options)
+      const response = await this._getClient()(url, options)
       return new HttpResponse(response, false)
     } catch (error) {
       return new HttpResponse(error, true)
