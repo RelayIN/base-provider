@@ -14,6 +14,7 @@ import { configureDb } from '../src/Db'
 import { configureModel } from '../src/Db/BaseModel'
 import { JSONAPISerializer } from '../src/Db/Serializers/JsonApi'
 import { Column, PrimaryColumn } from '../src/Db/Decorators'
+import { S3 } from '../src/Drive/S3'
 
 export default class BaseProvider {
   constructor (public container) {
@@ -43,6 +44,11 @@ export default class BaseProvider {
 
     this.container.singleton('Relay/Orm/JsonApiSerializer', () => {
       return new JSONAPISerializer()
+    })
+
+    this.container.bind('Relay/Drive', () => {
+      const Config = this.container.use('Adonis/Src/Config')
+      return new S3(Config.get('driver.s3'))
     })
   }
 

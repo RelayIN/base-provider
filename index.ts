@@ -21,6 +21,8 @@ export {
   JSONAPISerializerContract,
   ColumnNode,
   ColumnContract,
+  DriverS3Contract,
+  S3Config,
 } from './src/Contracts'
 
 export { PrimaryColumn, Column } from './src/Db/Decorators'
