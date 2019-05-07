@@ -9,6 +9,7 @@
 
 import { GotJSONOptions } from 'got'
 import * as Knex from 'knex'
+import { Stream } from 'stream'
 
 /**
  * Converts array to an object with array values
@@ -178,4 +179,23 @@ export interface RepositoryContract<Model extends BaseModelContract> {
   fetch (): Promise<Model[]>,
   exec (): Promise<any>,
   persist (model: Model): Promise<void>,
+}
+
+/**
+ * S3 config object shape
+ */
+export type S3Config = {
+  accessKeyId: string,
+  secretAccessKey: string,
+  region: string,
+  bucket: string,
+}
+
+export interface DriverS3Contract {
+  get (location: string, encoding?: string): Promise<any>,
+  getJSON (location: string, encoding?: string): Promise<null | any>,
+  put (location: string, content: Buffer): Promise<string>,
+  exists (location: string): Promise<boolean>,
+  stream (location: string): Stream,
+  delete (location: string): Promise<void>,
 }
