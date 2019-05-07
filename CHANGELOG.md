@@ -1,3 +1,12 @@
+## [1.0.11](https://github.com/thetutlage/base-provider/compare/1.0.10...1.0.11) (2019-05-07)
+
+
+### Features
+
+* add support for s3 ([d4e8edb](https://github.com/thetutlage/base-provider/commit/d4e8edb))
+
+
+
 ## [1.0.10](https://github.com/thetutlage/base-provider/compare/1.0.9...1.0.10) (2019-05-03)
 
 
