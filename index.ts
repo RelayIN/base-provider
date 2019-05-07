@@ -21,7 +21,7 @@ export {
   JSONAPISerializerContract,
   ColumnNode,
   ColumnContract,
-  DriverS3Contract,
+  DriveContract,
   S3Config,
 } from './src/Contracts'
 
