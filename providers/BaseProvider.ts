@@ -48,7 +48,7 @@ export default class BaseProvider {
 
     this.container.bind('Relay/Drive', () => {
       const Config = this.container.use('Adonis/Src/Config')
-      return new S3(Config.get('driver.s3'))
+      return new S3(Config.get('drive.s3'))
     })
   }
 

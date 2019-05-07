@@ -191,7 +191,7 @@ export type S3Config = {
   bucket: string,
 }
 
-export interface DriverS3Contract {
+export interface DriveContract {
   get (location: string, encoding?: string): Promise<any>,
   getJSON (location: string, encoding?: string): Promise<null | any>,
   put (location: string, content: Buffer): Promise<string>,
