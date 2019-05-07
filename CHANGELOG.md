@@ -1,3 +1,12 @@
+## [1.0.12](https://github.com/thetutlage/base-provider/compare/1.0.11...1.0.12) (2019-05-07)
+
+
+### Bug Fixes
+
+* bad config pointer in provider file ([06ee504](https://github.com/thetutlage/base-provider/commit/06ee504))
+
+
+
 ## [1.0.11](https://github.com/thetutlage/base-provider/compare/1.0.10...1.0.11) (2019-05-07)
 
 
