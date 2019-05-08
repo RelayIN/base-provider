@@ -1,10 +1,10 @@
-import { S3Config, DriverS3Contract } from '../Contracts'
+import { S3Config, DriveContract } from '../Contracts'
 
 /**
  * S3 client is used to read and write user passbooks from
  * s3.
  */
-export class S3 implements DriverS3Contract {
+export class S3 implements DriveContract {
   private _client: any
   private _bucket: string
 

@@ -239,4 +239,33 @@ test.group('Relay Services | Http client', () => {
     assert.equal(logger.log.body, JSON.stringify({ username: 'virk' }))
     assert.equal(logger.log.url, 'http://localhost:8000/v1/sms/otp/send')
   })
+
+  test('stream data from request', async (assert, done) => {
+    const config = {
+      notifications: {
+        baseUrl: 'http://localhost:8000',
+        version: 'v1',
+        actions: {
+          sendOtp: 'sms/otp/send',
+        },
+      },
+    }
+
+    const server = createServer((_req, res) => {
+      res.writeHead(200, { 'content-type': 'application/json' })
+      res.write(JSON.stringify({ status: 200 }))
+      res.end()
+    })
+    server.listen(8000)
+
+    const services = new RelayServices(config, fakeLogger)
+
+    services.get('notifications')
+      .stream('sendOtp', {})
+      .on('response', (res) => {
+        assert.equal(res.headers['content-type'], 'application/json')
+        server.close()
+        done()
+      })
+  }).timeout(0)
 })
