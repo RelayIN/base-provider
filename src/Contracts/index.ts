@@ -7,9 +7,9 @@
  * file that was distributed with this source code.
  */
 
-import { GotJSONOptions } from 'got'
+import { GotJSONOptions, GotEmitter } from 'got'
 import * as Knex from 'knex'
-import { Stream } from 'stream'
+import { Stream, Duplex } from 'stream'
 
 /**
  * Converts array to an object with array values
@@ -63,6 +63,7 @@ export interface HttpResponseContract {
 export interface HttpClientContract {
   debug (): HttpClientContract,
   perform (name: string, options: ClientActionOptions): Promise<HttpResponseContract>,
+  stream (name: string, options: ClientActionOptions): GotEmitter & Duplex,
 }
 
 /**
