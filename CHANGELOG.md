@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/thetutlage/base-provider/compare/1.0.12...1.1.0) (2019-05-08)
+
+
+### Features
+
+* add support for stream proxy requests ([47ff004](https://github.com/thetutlage/base-provider/commit/47ff004))
+
+
+
 ## [1.0.12](https://github.com/thetutlage/base-provider/compare/1.0.11...1.0.12) (2019-05-07)
 
 
