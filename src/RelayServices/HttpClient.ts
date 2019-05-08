@@ -22,13 +22,11 @@ export class HttpClient implements HttpClientContract {
   }
 
   /**
-   * Returns a configured instance of `got` based upon the user
-   * config defined inside `config/services.ts` file.
+   * Returns base options for the got instance
    */
-  private _getClient (): got.GotInstance<got.GotJSONFn> {
-    const options: got.GotJSONOptions = {
+  private _getBaseOptions (): got.GotBodyOptions<'utf-8'> {
+    const options: got.GotBodyOptions<'utf-8'> = {
       baseUrl: `${this._config.baseUrl}/${this._config.version}`,
-      json: true,
       hooks: {},
     }
 
@@ -44,7 +42,41 @@ export class HttpClient implements HttpClientContract {
       ]
     }
 
-    return got.extend(options)
+    return options
+  }
+
+  /**
+   * Returns a configured instance of `got` based upon the user
+   * config defined inside `config/services.ts` file.
+   */
+  private _getJSONClient (): got.GotInstance<got.GotJSONFn> {
+    return got.extend(Object.assign({ json: true }, this._getBaseOptions()))
+  }
+
+  /**
+   * Returns a configure instance of `got` to stream data from a service
+   */
+  private _getStreamClient () {
+    return got.extend(Object.assign({ stream: true }, this._getBaseOptions()))
+  }
+
+  /**
+   * Returns URL for the service action
+   */
+  private _getActionUrl (name: string, params: any) {
+    const action = this._config.actions[name]
+    if (!action) {
+      throw new Error(`Missing ${name} action`)
+    }
+
+    let url: string
+    if (typeof (action) === 'function') {
+      url = action(params)
+    } else {
+      url = action
+    }
+
+    return url
   }
 
   /**
@@ -60,25 +92,22 @@ export class HttpClient implements HttpClientContract {
    * Perform an HTTP request on a given action. Make sure the actions
    * are defined inside the service config.
    */
-
   public async perform (name: string, options: ClientActionOptions): Promise<HttpResponseContract> {
-    const action = this._config.actions[name]
-    if (!action) {
-      throw new Error(`Missing ${name} action`)
-    }
-
-    let url: string
-    if (typeof (action) === 'function') {
-      url = action(options.params)
-    } else {
-      url = action
-    }
+    const url = this._getActionUrl(name, options.params)
 
     try {
-      const response = await this._getClient()(url, options)
+      const response = await this._getJSONClient()(url, options)
       return new HttpResponse(response, false)
     } catch (error) {
       return new HttpResponse(error, true)
     }
+  }
+
+  /**
+   * Returns a stream pointing to the given service
+   */
+  public stream (name: string, options: ClientActionOptions) {
+    const url = this._getActionUrl(name, options.params)
+    return this._getStreamClient().stream(url, options)
   }
 }
