@@ -395,4 +395,24 @@ test.group('Repository', (group) => {
     assert.isFalse(user.$isDirty)
     assert.deepEqual(user.$attributes, { id: 1, username: 'virk', full_name: 'Harminder virk' })
   })
+
+  test('allow passing knex transaction to repository instance', (assert, done) => {
+    const db = configureDb(new FakeConfig())
+
+    db.transaction((trx) => {
+      const repo = new Repository(User, trx)
+      assert.instanceOf(repo['builder'], QueryBuilder)
+      done()
+    })
+  })
+
+  test('allow passing knex transaction via model query method', (assert, done) => {
+    const db = configureDb(new FakeConfig())
+
+    db.transaction((trx) => {
+      const repo = User.query(trx)
+      assert.instanceOf(repo['builder'], QueryBuilder)
+      done()
+    })
+  })
 })
