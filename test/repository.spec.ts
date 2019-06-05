@@ -279,7 +279,7 @@ test.group('Repository', (group) => {
     user.fullName = 'H virk'
     await repo.persist(user)
 
-    db['removeAllListeners']('query', queryListener)
+    db.removeAllListeners('query')
     await db.table('users').truncate()
 
     assert.equal(query.sql, 'insert into `users` (`full_name`, `username`) values (?, ?)')
@@ -306,7 +306,7 @@ test.group('Repository', (group) => {
     await repo.persist(user)
     await repo.persist(user)
 
-    db['removeAllListeners']('query', queryListener)
+    db.removeAllListeners('query')
     await db.table('users').truncate()
 
     assert.lengthOf(queries, 1)
@@ -348,7 +348,7 @@ test.group('Repository', (group) => {
 
     await repo.persist(post)
 
-    db['removeAllListeners']('query', queryListener)
+    db.removeAllListeners('query')
     await db.table('users').truncate()
 
     assert.lengthOf(queries, 2)
@@ -383,7 +383,7 @@ test.group('Repository', (group) => {
     assert.deepEqual(user.$dirty, { full_name: 'Harminder virk' })
 
     await user.save(db)
-    db['removeAllListeners']('query', queryListener)
+    db.removeAllListeners('query')
     await db.table('users').truncate()
 
     assert.lengthOf(queries, 2)
