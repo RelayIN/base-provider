@@ -1,4 +1,5 @@
 import { S3Config, DriveContract } from '../Contracts'
+import { PassThrough } from 'stream'
 
 /**
  * S3 client is used to read and write user passbooks from
@@ -16,12 +17,12 @@ export class S3 implements DriveContract {
   /**
    * Writes file to s3
    */
-  public put (location: string, content: Buffer): Promise<string> {
+  public put (location: string, content: Buffer, bucket?: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const params = {
         Key: location,
         Body: content,
-        Bucket: this._bucket,
+        Bucket: bucket || this._bucket,
       }
 
       this._client.upload(params, (error: Error, response: any) => {
@@ -35,12 +36,34 @@ export class S3 implements DriveContract {
   }
 
   /**
+   * Pipe stream to s3.
+   */
+  public putStream (location: string, bucket?: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const pass = new PassThrough()
+
+      const params = {
+        Key: location,
+        Body: pass,
+        Bucket: bucket || this._bucket,
+      }
+
+      this._client.upload(params, (error: Error, response: any) => {
+        if (error) {
+          return reject(error)
+        }
+        return resolve(response.Location)
+      })
+    })
+  }
+
+  /**
    * Returns a boolean telling if a file exists or not.
    */
-  public exists (location: string): Promise<boolean> {
+  public exists (location: string, bucket?: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       const clonedParams = {
-        Bucket: this._bucket,
+        Bucket: bucket || this._bucket,
         Key: location,
       }
 
@@ -63,9 +86,9 @@ export class S3 implements DriveContract {
   /**
    * Stream file from a given location
    */
-  public stream (location: string) {
+  public stream (location: string, bucket?: string) {
     const params = {
-      Bucket: this._bucket,
+      Bucket: bucket || this._bucket,
       Key: location,
     }
 
@@ -75,10 +98,10 @@ export class S3 implements DriveContract {
   /**
    * Remove file from s3 bucket
    */
-  public delete (location: string): Promise<void> {
+  public delete (location: string, bucket?: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const params = {
-        Bucket: this._bucket,
+        Bucket: bucket || this._bucket,
         Key: location,
       }
 
@@ -95,10 +118,10 @@ export class S3 implements DriveContract {
   /**
    * Reads file from s3 bucket
    */
-  public get (location: string, encoding = 'utf-8'): Promise<any> {
+  public get (location: string, encoding = 'utf-8', bucket?: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const params = {
-        Bucket: this._bucket,
+        Bucket: bucket || this._bucket,
         Key: location,
       }
 
@@ -116,8 +139,8 @@ export class S3 implements DriveContract {
   /**
    * Reads file from s3 bucket
    */
-  public async getJSON (location: string, encoding = 'utf-8'): Promise<null | any> {
-    const output = await this.get(location, encoding)
+  public async getJSON (location: string, encoding = 'utf-8', bucket?: string): Promise<null | any> {
+    const output = await this.get(location, encoding, bucket)
     try {
       return JSON.parse(output)
     } catch (error) {
