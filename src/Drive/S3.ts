@@ -1,5 +1,5 @@
 import { S3Config, DriveContract } from '../Contracts'
-import { PassThrough } from 'stream'
+import { Stream } from 'stream'
 
 /**
  * S3 client is used to read and write user passbooks from
@@ -38,13 +38,11 @@ export class S3 implements DriveContract {
   /**
    * Pipe stream to s3.
    */
-  public putStream (location: string, bucket?: string): Promise<string> {
+  public putStream (location: string, content: Stream, bucket?: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const pass = new PassThrough()
-
       const params = {
         Key: location,
-        Body: pass,
+        Body: content,
         Bucket: bucket || this._bucket,
       }
 
