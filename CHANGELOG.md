@@ -1,3 +1,12 @@
+## [1.1.3](https://github.com/thetutlage/base-provider/compare/1.1.2...1.1.3) (2019-06-10)
+
+
+### Features
+
+* add support for piping stream to s3 ([217c7fa](https://github.com/thetutlage/base-provider/commit/217c7fa))
+
+
+
 ## [1.1.2](https://github.com/thetutlage/base-provider/compare/1.1.1...1.1.2) (2019-06-05)
 
 

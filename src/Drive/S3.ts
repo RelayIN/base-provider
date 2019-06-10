@@ -1,5 +1,5 @@
 import { S3Config, DriveContract } from '../Contracts'
-import { PassThrough } from 'stream';
+import { PassThrough } from 'stream'
 
 /**
  * S3 client is used to read and write user passbooks from
