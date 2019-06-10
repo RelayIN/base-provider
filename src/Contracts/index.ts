@@ -193,10 +193,11 @@ export type S3Config = {
 }
 
 export interface DriveContract {
-  get (location: string, encoding?: string): Promise<any>,
-  getJSON (location: string, encoding?: string): Promise<null | any>,
-  put (location: string, content: Buffer): Promise<string>,
-  exists (location: string): Promise<boolean>,
-  stream (location: string): Stream,
-  delete (location: string): Promise<void>,
+  get (location: string, encoding?: string, bucket?: string): Promise<any>,
+  getJSON (location: string, encoding?: string, bucket?: string): Promise<null | any>,
+  put (location: string, content: Buffer, bucket?: string): Promise<string>,
+  putStream (location: string, bucket?: string): Promise<string>,
+  exists (location: string, bucket?: string): Promise<boolean>,
+  stream (location: string, bucket?: string): Stream,
+  delete (location: string, bucket?: string): Promise<void>,
 }
