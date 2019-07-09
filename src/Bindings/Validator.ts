@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { utils } from 'indicative'
+import { skippable, getValue, patchValue } from 'indicative-utils'
 import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile'
 
 /**
@@ -16,10 +16,10 @@ import { parsePhoneNumberFromString } from 'libphonenumber-js/mobile'
  */
 export const phone = {
   async: false,
-  validate (data, field, _args, _type, root, config) {
-    const fieldValue = data[field]
+  validate (data, field, _args, config) {
+    const fieldValue = getValue(data, field)
 
-    if (utils.skippable(fieldValue, field, config)) {
+    if (skippable(fieldValue, field, config)) {
       return true
     }
 
@@ -34,7 +34,7 @@ export const phone = {
     /**
      * Patch the value by mutating it
      */
-    utils.patchValue(data, field, phoneNumber.nationalNumber, root)
+    patchValue(data, field, phoneNumber.nationalNumber)
     return true
   },
 }
