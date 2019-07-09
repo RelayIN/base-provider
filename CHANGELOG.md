@@ -1,3 +1,7 @@
+## [1.1.5](https://github.com/thetutlage/base-provider/compare/1.1.4...1.1.5) (2019-07-09)
+
+
+
 ## [1.1.4](https://github.com/thetutlage/base-provider/compare/1.1.3...1.1.4) (2019-06-10)
 
 

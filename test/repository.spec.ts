@@ -8,7 +8,7 @@
 */
 
 import * as test from 'japa'
-import * as QueryBuilder from 'knex/lib/query/builder'
+import * as QueryBuilder from 'knex/src/query/builder'
 
 import { configureDb } from '../src/Db'
 import { configureModel } from '../src/Db/BaseModel'
