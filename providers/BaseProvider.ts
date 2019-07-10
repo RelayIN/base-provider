@@ -66,7 +66,7 @@ export default class BaseProvider {
      * Extend indicative, if it exists
      */
     try {
-      const { extend } = require('indicative')
+      const { extend } = require('indicative/validator')
       Object.keys(rules).forEach((rule) => extend(rule, rules[rule]))
     } catch (error) {
       // ignore if indicative is not installed
