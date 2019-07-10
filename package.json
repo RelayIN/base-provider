@@ -1,6 +1,6 @@
 {
   "name": "@relayin/base-provider",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Base provider for Relay micro services",
   "main": "build/index.js",
   "files": [
@@ -25,8 +25,8 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@adonisjs/mrm-preset": "^2.0.3",
-    "@types/node": "^12.6.1",
-    "aws-sdk": "^2.489.0",
+    "@types/node": "^12.6.2",
+    "aws-sdk": "^2.490.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
     "del-cli": "^2.0.0",
@@ -50,7 +50,7 @@
     "decamelize": "^3.2.0",
     "got": "^9.6.0",
     "igniculus": "^1.5.0",
-    "indicative": "^7.1.2",
+    "indicative": "^7.2.0",
     "knex": "^0.18.3",
     "libphonenumber-js": "^1.7.20",
     "pg": "^7.11.0",
