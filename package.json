@@ -51,7 +51,7 @@
     "got": "^9.6.0",
     "igniculus": "^1.5.0",
     "indicative": "^7.2.0",
-    "knex": "^0.18.3",
+    "knex": "^0.19.5",
     "libphonenumber-js": "^1.7.20",
     "pg": "^7.11.0",
     "pluralize": "^8.0.0",
